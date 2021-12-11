@@ -1,3 +1,3 @@
-# Web-Animation-Template
+# Trickshot Food Plating
 
-My template repository for creating web animations
+Trickshot food plating web animation created using multiple browser windows and aiming food components onto a plate.
