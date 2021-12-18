@@ -2,6 +2,7 @@ html,
 body {
   height: 100%;
   color: black;
+  background-color: black !important;
   margin: 0;
 }
 
@@ -105,4 +106,37 @@ tr.selected:hover {
 }
 tr.selected {
   background-color: rgba(255, 255, 255, 0.2);
+}
+
+.if-launching {
+  display: none !important;
+}
+.launching .if-launching {
+  display: inline-block !important;
+}
+
+.if-not-launching {
+  display: inline-block !important;
+}
+.launching .if-not-launching {
+  display: none !important;
+}
+
+#food-components {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 6px;
+}
+
+#food-components img {
+  display: inline-block;
+  position: absolute;
+}
+
+#initial-velocity {
+  display: inline-block;
+  position: absolute;
+  cursor: move;
 }

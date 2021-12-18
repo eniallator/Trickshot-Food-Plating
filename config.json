@@ -15,5 +15,10 @@
             "max": 1,
             "step": 0.05
         }
+    },
+    {
+        "id": "add-component",
+        "text": "Add Food Component",
+        "type": "button"
     }
 ]

@@ -1,0 +1,17 @@
+[
+    {
+        "name": "Steak",
+        "imgPath": "images/components/steak.png",
+        "sizePercent": 0.3
+    },
+    {
+        "name": "Chips",
+        "imgPath": "images/components/chips.png",
+        "sizePercent": 0.5
+    },
+    {
+        "name": "Salmon",
+        "imgPath": "images/components/salmon.png",
+        "sizePercent": 0.4
+    }
+]
