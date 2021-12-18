@@ -60,6 +60,7 @@ const plateMinSize = new Vector(100, 70);
 const radiusMaxOffset = plateMinSize.copy().multiply(3);
 const plateRimPercent = 0.7;
 const plateRimWidthPercent = 0.05;
+const plateHitboxPercent = plateRimPercent * 0.9;
 let plateRadii;
 let plateCoords = Vector.ONE;
 let foodConfig;
@@ -152,8 +153,10 @@ const updateComponents = (dt) => {
     component.pos.add(component.vel);
 
     if (
-      component.vel.y > 0 &&
-      component.pos.y + component.el.height() / 2 > plateCoords.y
+      plateCoords.x - plateRadii.x * plateHitboxPercent < component.pos.x &&
+      plateCoords.x + plateRadii.x * plateHitboxPercent > component.pos.x &&
+      plateCoords.y - plateRadii.y * plateHitboxPercent < component.pos.y &&
+      plateCoords.y + plateRadii.y * plateHitboxPercent > component.pos.y
     ) {
       component.stopped = true;
     }
