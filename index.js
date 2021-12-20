@@ -29,7 +29,7 @@ const componentNamePrefix = "food-component-";
 paramConfig.addListener(() => {
   const currId = componentId++;
   foodComponents[currId] = window.open(
-    "/component.html",
+    "./component.html",
     componentNamePrefix + currId,
     `innerWidth=${plateRadii.x * 2},innerHeight=${plateRadii.y * 2},screenX=${
       canvas.width / 2 - plateRadii.x
