@@ -100,7 +100,14 @@ function getAutomaticInitialVelocity() {
     .copy()
     .add(window.opener.getMonitorCoords())
     .sub(monitorCoords);
-  const diff = plateCoords.sub(getRelativeInitialCoords());
+  const diff = plateCoords
+    .sub(
+      new Vector(
+        $("#selected-component").width() / 2,
+        $("#selected-component").height() / 2
+      )
+    )
+    .sub(getRelativeInitialCoords());
   const resultingYAcceleration = window.opener.getGravity().copy();
   console.log(diff, automaticAimAirTime, resultingYAcceleration);
   return diff
