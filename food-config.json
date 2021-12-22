@@ -13,5 +13,10 @@
         "name": "Salmon",
         "imgPath": "images/components/salmon.png",
         "sizePercent": 0.4
+    },
+    {
+        "name": "Beans",
+        "imgPath": "images/components/beans.png",
+        "sizePercent": 0.4
     }
 ]
