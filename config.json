@@ -3,7 +3,7 @@
         "id": "manual-aim",
         "label": "Manual Aim Mode",
         "type": "checkbox",
-        "default": false
+        "default": true
     },
     {
         "id": "scale",

@@ -122,6 +122,13 @@ tr.selected {
   display: none !important;
 }
 
+.if-manual {
+  display: none;
+}
+.manual .if-manual {
+  display: inline-block;
+}
+
 #food-components {
   position: fixed;
   top: 0;
@@ -136,7 +143,6 @@ tr.selected {
 }
 
 #initial-velocity {
-  display: inline-block;
   position: absolute;
   cursor: move;
 }

@@ -1,6 +1,8 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
+ctx.translate(0.5, 0.5);
+
 const mouse = new Mouse(canvas);
 const paramConfig = new ParamConfig(
   "./config.json",
@@ -54,13 +56,12 @@ window.onresize = (evt) => {
 
 ctx.strokeStyle = "white";
 
-const tps = 20;
-const foodGravityAcceleration = new Vector(0, 1);
+const foodGravityAcceleration = Vector.DOWN.multiply(0.005);
 const plateMinSize = new Vector(100, 70);
 const radiusMaxOffset = plateMinSize.copy().multiply(3);
 const plateRimPercent = 0.7;
 const plateRimWidthPercent = 0.05;
-const plateHitboxPercent = plateRimPercent * 0.9;
+const plateHitboxPercent = plateRimPercent;
 let plateRadii;
 let plateCoords = Vector.ONE;
 let foodConfig;
@@ -81,16 +82,27 @@ function getPlateRadii() {
   return plateRadii;
 }
 
+function getPlateCoords() {
+  return plateCoords;
+}
+
+function getGravity() {
+  return foodGravityAcceleration;
+}
+
 const activeComponents = {};
 const componentContainers = [];
 let alreadyRunning = false;
 let lastTime;
 
-function registerComponentContainer(containerEl, getContainerCoords) {
+function initializeComponent(containerEl, getContainerCoords) {
   componentContainers.push({
     el: containerEl,
     getCoords: getContainerCoords,
   });
+  containerEl
+    .closest("body")
+    .toggleClass("manual", paramConfig.getVal("manual-aim"));
 }
 
 function launchComponent(currId, initialVel, initialPos, imgPath, width) {
@@ -150,7 +162,7 @@ const updateComponents = (dt) => {
   for (let component of Object.values(activeComponents)) {
     if (component.stopped) continue;
     component.vel.add(foodGravityAcceleration.copy().multiply(dt));
-    component.pos.add(component.vel);
+    component.pos.add(component.vel.copy().multiply(dt));
 
     if (
       plateCoords.x - plateRadii.x * plateHitboxPercent < component.pos.x &&
@@ -165,7 +177,7 @@ const updateComponents = (dt) => {
 
 const mainLoop = () => {
   const currTime = Date.now();
-  const dt = (currTime - lastTime) / (1000 / tps);
+  const dt = currTime - lastTime;
   lastTime = currTime;
 
   updateComponents(dt);
@@ -241,5 +253,17 @@ const init = () => {
   window.onresize();
   paramConfig.addListener(window.onresize, ["scale"]);
 };
+
+paramConfig.addListener(
+  (state) => {
+    Object.values(foodComponents).forEach((componentWindow) => {
+      $(componentWindow.document.body).toggleClass(
+        "manual",
+        state["manual-aim"]
+      );
+    });
+  },
+  ["manual-aim"]
+);
 
 paramConfig.onLoad(init);

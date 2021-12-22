@@ -2,6 +2,7 @@ const componentId = window.opener.getId(window.name);
 let selectedComponent;
 
 const maxPower = 15;
+const automaticAimAirTime = 1000;
 
 const initialVelocityInUnitCircle = Vector.UP;
 const initialVelocityEl = $("#initial-velocity");
@@ -71,10 +72,7 @@ window.onresize = () => {
 
 const foodConfig = window.opener.getFoodConfig();
 
-window.opener.registerComponentContainer(
-  $("#food-components"),
-  () => monitorCoords
-);
+window.opener.initializeComponent($("#food-components"), () => monitorCoords);
 
 selectedComponent = foodConfig[0];
 $("#selected-component")
@@ -90,17 +88,43 @@ $("#food-component")
     window.onresize();
   });
 
+const getRelativeInitialCoords = () =>
+  new Vector(
+    +$("#selected-component").css("left").slice(0, -2),
+    +$("#selected-component").css("top").slice(0, -2)
+  );
+
+function getAutomaticInitialVelocity() {
+  const plateCoords = window.opener
+    .getPlateCoords()
+    .copy()
+    .add(window.opener.getMonitorCoords())
+    .sub(monitorCoords);
+  const diff = plateCoords.sub(getRelativeInitialCoords());
+  const resultingYAcceleration = window.opener.getGravity().copy();
+  console.log(diff, automaticAimAirTime, resultingYAcceleration);
+  return diff
+    .divide(automaticAimAirTime)
+    .sub(resultingYAcceleration.multiply(automaticAimAirTime).divide(2));
+}
+
 function launch() {
   document.body.classList.add("launching");
-  const el = $("#selected-component");
+  let initialVel;
+  if (document.body.classList.contains("manual")) {
+    initialVel = initialVelocityInUnitCircle.copy().multiply(maxPower);
+  } else {
+    initialVel = getAutomaticInitialVelocity();
+    console.log(initialVel);
+  }
   window.opener.launchComponent(
     componentId,
-    initialVelocityInUnitCircle.copy().multiply(maxPower),
-    new Vector(+el.css("left").slice(0, -2), +el.css("top").slice(0, -2))
+    initialVel,
+    getRelativeInitialCoords()
       .add(monitorCoords)
       .sub(window.opener.getMonitorCoords()),
     selectedComponent.imgPath,
-    el.width()
+    $("#selected-component").width()
   );
 }
 
